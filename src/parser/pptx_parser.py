@@ -1,10 +1,10 @@
+import os
 from pptx import Presentation
 from pptx.util import Inches
-import requests
-from io import BytesIO
 
 
-def create_pptx_from_response(response_text, output_path="presentation.pptx", slide_images=None):
+def create_pptx_from_response(response_text, output_path="presentation.pptx",
+                              slide_images=None):
     """
     Converts structured LLM output into a PowerPoint presentation.
     Optionally inserts one image per slide.
@@ -44,13 +44,14 @@ def create_pptx_from_response(response_text, output_path="presentation.pptx", sl
 
         # Add image if available
         if i < len(slide_images) and slide_images[i]:
-            try:
-                img_data = requests.get(slide_images[i]).content
-                image_stream = BytesIO(img_data)
-                with open(image_stream, "rb") as img_file:
-                    slide.shapes.add_picture(img_file, Inches(5), Inches(2), width=Inches(4))
-            except Exception as e:
-                print(f"Failed to add image to slide {i+1}: {e}")
+            image_path = slide_images[i]
+            if image_path and os.path.exists(image_path):
+                try:
+                    with open(image_path, "rb") as img_file:
+                        slide.shapes.add_picture(img_file, Inches(5), Inches(2),
+                                                 width=Inches(4))
+                except Exception as e:
+                    print(f"Failed to add image to slide {i+1}: {e}")
 
     prs.save(output_path)
     return output_path

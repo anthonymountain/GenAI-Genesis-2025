@@ -8,7 +8,9 @@ co = cohere.ClientV2(os.getenv("COHERE_API_KEY"))
 
 def generate_slides(text: str) -> str:
     prompt = f"""
-Create a presentation based on the following content. Break it into slides with clear titles and 3–5 bullet points each. Also write a short presenter script for each slide.
+Create a presentation based on the following content. Break it into slides with 
+clear titles and 3–5 bullet points each. Also write a short presenter script for
+ each slide.
 
 Content:
 {text}

@@ -35,7 +35,15 @@ def main():
     os.makedirs("generated_images", exist_ok=True)
 
     for i, (title, bullets) in enumerate(slide_blocks):
-        prompt = f"Generate a 3D-rendered image for a slide titled '{title}' with context: {', '.join(bullets)}"
+        prompt = (
+            f"Create a unique and visually striking 3D-rendered illustration"
+            f"that complements a presentation slide about '{title}'."
+            f"Do not include any text in the image. Use metaphor or symbolism"
+            f"where appropriate. Imagine this is a visual aid — not just a"
+            f"restatement of the content. Here are key bullet points for"
+            f"context:\n{chr(10).join(f'- {b}' for b in bullets)}"
+        )
+
         filename = f"generated_images/slide_{i+1}.png"
         print(f"Generating image for slide {i+1}...")
         try:
@@ -46,7 +54,8 @@ def main():
             image_paths.append(None)
 
     print("Creating final presentation...")
-    output_path = create_pptx_from_response(response_text, slide_images=image_paths)
+    output_path = create_pptx_from_response(response_text,
+                                            slide_images=image_paths)
     print(f"Presentation saved as {output_path}")
 
 
