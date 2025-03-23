@@ -17,12 +17,12 @@ Content:
 
 Output format:
 Slide 1:
-Title: ...
+Title: Slide Title Here
 Bullet Points:
-- ...
-- ...
-- ...
-Presenter Script: ...
+- Point 1
+- Point 2
+- Point 3
+Presenter Script: Speaker notes here
 """
     response = co.chat(
         model="command-a-03-2025",

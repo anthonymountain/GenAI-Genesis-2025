@@ -21,8 +21,9 @@ def create_pptx_from_response(response_text, output_path="presentation.pptx",
         reading_script = False
 
         for line in lines:
-            if line.startswith("Title:"):
-                title = line.replace("Title:", "").strip()
+
+            if ":" in line and "title" in line.lower().split(":")[0]:
+                title = line.split(":", 1)[-1].strip()
             elif line.startswith("-"):
                 bullets.append(line.strip())
             elif line.startswith("Presenter Script:"):
@@ -33,7 +34,7 @@ def create_pptx_from_response(response_text, output_path="presentation.pptx",
 
         slide_layout = prs.slide_layouts[1]
         slide = prs.slides.add_slide(slide_layout)
-        slide.shapes.title.text = title or "Untitled Slide"
+        slide.shapes.title.text = title
         content = slide.placeholders[1]
         content.text = "\n".join(bullets)
 
@@ -48,8 +49,13 @@ def create_pptx_from_response(response_text, output_path="presentation.pptx",
             if image_path and os.path.exists(image_path):
                 try:
                     with open(image_path, "rb") as img_file:
-                        slide.shapes.add_picture(img_file, Inches(5), Inches(2),
-                                                 width=Inches(4))
+                        img_width = Inches(3)
+                        img_height = Inches(2)
+                        left = prs.slide_width - img_width - Inches(0.5)
+                        top = prs.slide_height - img_height - Inches(0.5)
+                        slide.shapes.add_picture(img_file, left, top,
+                                                 width=img_width,
+                                                 height=img_height)
                 except Exception as e:
                     print(f"Failed to add image to slide {i+1}: {e}")
 

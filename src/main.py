@@ -38,10 +38,6 @@ def main():
         prompt = (
             f"Create a unique and visually striking 3D-rendered illustration"
             f"that complements a presentation slide about '{title}'."
-            f"Do not include any text in the image. Use metaphor or symbolism"
-            f"where appropriate. Imagine this is a visual aid — not just a"
-            f"restatement of the content. Here are key bullet points for"
-            f"context:\n{chr(10).join(f'- {b}' for b in bullets)}"
         )
 
         filename = f"generated_images/slide_{i+1}.png"
